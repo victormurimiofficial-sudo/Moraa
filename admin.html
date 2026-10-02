@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Moraa Admin | Beauty, Refined.</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+<div id="admin-login" class="login-shell">
+  <div class="login-card">
+    <div class="brand-mark">M</div>
+    <div class="eyebrow">MORAA BEAUTY PARLOUR</div>
+    <h1>Owner workspace</h1>
+    <p>Sign in to manage the website, bookings, services, shop, inventory and POS.</p>
+    <form id="login-form">
+      <label>Email<input id="login-email" type="email" autocomplete="username" required placeholder="Admin email"></label>
+      <label>Password<input id="login-password" type="password" autocomplete="current-password" required placeholder="Password"></label>
+      <button class="primary" type="submit">Enter admin →</button>
+      <div id="login-error" class="error"></div>
+    </form>
+    <a href="/" class="back-link">← Back to website</a>
+  </div>
+</div>
+
+<div id="admin-app" class="app-shell" hidden>
+  <aside class="sidebar">
+    <div class="side-brand"><div class="brand-mark small">M</div><div><strong>Moraa</strong><span>Owner Admin</span></div></div>
+    <nav id="side-nav">
+      <button data-view="dashboard" class="active">⌂ <span>Dashboard</span></button>
+      <button data-view="pos">▣ <span>POS</span><b id="cart-badge">0</b></button>
+      <button data-view="sales">↗ <span>Sales</span></button>
+      <button data-view="products">◇ <span>Products</span></button>
+      <button data-view="inventory">▤ <span>Inventory</span></button>
+      <button data-view="bookings">◷ <span>Bookings</span></button>
+      <button data-view="customers">♙ <span>Customers</span></button>
+      <button data-view="services">✦ <span>Services</span></button>
+      <button data-view="expenses">− <span>Expenses</span></button>
+      <button data-view="staff">♙ <span>Staff</span></button>
+      <button data-view="content">✎ <span>Website Content</span></button>
+      <button data-view="reviews">★ <span>Reviews</span></button>
+      <button data-view="gallery">▧ <span>Gallery</span></button>
+      <button data-view="settings">⚙ <span>Settings</span></button>
+    </nav>
+    <div class="side-bottom"><a href="/" target="_blank">View website ↗</a><button id="logout">Sign out</button></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="mobile-menu" class="icon-btn">☰</button>
+      <div><span class="eyebrow">MORAA BEAUTY PARLOUR</span><h2 id="view-title">Dashboard</h2></div>
+      <div class="top-actions"><span id="today-label"></span><button class="ghost" data-view-jump="pos">Open POS</button></div>
+    </header>
+    <div id="toast" class="toast"></div>
+
+    <section id="view-dashboard" class="view active">
+      <div class="hero-admin"><div><span class="eyebrow">OWNER CONTROL CENTRE</span><h1>Everything in one place.</h1><p>Run the salon, shop and website from one clean workspace.</p></div><button class="primary" data-view-jump="pos">Start a sale →</button></div>
+      <div class="stat-grid">
+        <article class="stat"><span>Today’s sales</span><strong id="stat-sales">KSh 0</strong><small id="stat-orders">0 transactions</small></article>
+        <article class="stat"><span>Products in stock</span><strong id="stat-stock">0</strong><small id="stat-low">0 low stock</small></article>
+        <article class="stat"><span>Appointments</span><strong id="stat-bookings">0</strong><small>Pending / upcoming</small></article>
+        <article class="stat"><span>Customers</span><strong id="stat-customers">0</strong><small>Saved customer records</small></article>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="panel-head"><h3>Recent sales</h3><button class="text-btn" data-view-jump="sales">View all</button></div><div id="recent-sales" class="table-wrap"></div></div>
+        <div class="panel"><div class="panel-head"><h3>Today’s appointments</h3><button class="text-btn" data-view-jump="bookings">Manage</button></div><div id="dash-bookings"></div></div>
+      </div>
+    </section>
+
+    <section id="view-pos" class="view">
+      <div class="pos-layout">
+        <div class="panel product-picker">
+          <div class="panel-head"><div><span class="eyebrow">RETAIL CHECKOUT</span><h3>Point of Sale</h3></div><button class="ghost" id="clear-cart">Clear cart</button></div>
+          <div class="pos-tools"><input id="pos-search" placeholder="Search product or SKU…"><select id="pos-category"><option value="">All categories</option></select></div>
+          <div id="pos-products" class="pos-products"></div>
+        </div>
+        <div class="panel cart-panel">
+          <div class="panel-head"><div><span class="eyebrow">CURRENT SALE</span><h3>Cart</h3></div><span id="cart-count">0 items</span></div>
+          <div id="cart-lines" class="cart-lines"></div>
+          <div class="sale-meta">
+            <label>Customer<input id="sale-customer" placeholder="Walk-in customer"></label>
+            <label>Payment<select id="sale-payment"><option>Cash</option><option>M-Pesa</option><option>Card</option><option>Other</option></select></label>
+            <label>Discount (KSh)<input id="sale-discount" type="number" min="0" value="0"></label>
+          </div>
+          <div class="totals"><div>Subtotal <strong id="cart-subtotal">KSh 0</strong></div><div>Discount <strong id="cart-discount">KSh 0</strong></div><div class="grand">Total <strong id="cart-total">KSh 0</strong></div></div>
+          <button class="primary wide" id="checkout">Complete sale →</button>
+          <button class="ghost wide" id="print-last">Print last receipt</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-sales" class="view"><div class="section-head"><div><span class="eyebrow">RECORDS</span><h1>Sales</h1><p>Every completed POS transaction is recorded here.</p></div><button class="ghost" id="export-sales">Export CSV</button></div><div class="panel"><div id="sales-table" class="table-wrap"></div></div></section>
+
+    <section id="view-products" class="view"><div class="section-head"><div><span class="eyebrow">SHOP CATALOGUE</span><h1>Products</h1><p>Add, edit and manage everything sold through the shop and POS.</p></div><button class="primary" id="add-product">+ Add product</button></div><div class="panel"><div id="products-table" class="table-wrap"></div></div></section>
+
+    <section id="view-inventory" class="view"><div class="section-head"><div><span class="eyebrow">STOCK CONTROL</span><h1>Inventory</h1><p>Monitor quantities, stock value and low-stock products.</p></div><button class="ghost" id="stock-adjust">Adjust stock</button></div><div class="panel"><div id="inventory-table" class="table-wrap"></div></div></section>
+
+    <section id="view-bookings" class="view"><div class="section-head"><div><span class="eyebrow">APPOINTMENTS</span><h1>Bookings</h1><p>Review and update appointment requests.</p></div></div><div class="panel"><div id="bookings-table" class="table-wrap"></div></div></section>
+
+    <section id="view-customers" class="view"><div class="section-head"><div><span class="eyebrow">CLIENT RELATIONSHIP</span><h1>Customers</h1><p>Keep customer details and visit history organised.</p></div><button class="primary" id="add-customer">+ Add customer</button></div><div class="panel"><div id="customers-table" class="table-wrap"></div></div></section>
+
+    <section id="view-services" class="view"><div class="section-head"><div><span class="eyebrow">SERVICE MENU</span><h1>Services</h1><p>Edit services, pricing, duration and visibility.</p></div><button class="primary" id="add-service">+ Add service</button></div><div class="panel"><div id="services-table" class="table-wrap"></div></div></section>
+
+    <section id="view-expenses" class="view"><div class="section-head"><div><span class="eyebrow">FINANCE</span><h1>Expenses</h1><p>Record operating costs and keep a simple running expense ledger.</p></div><button class="primary" id="add-expense">+ Add expense</button></div><div class="panel"><div id="expenses-table" class="table-wrap"></div></div></section>
+
+    <section id="view-staff" class="view"><div class="section-head"><div><span class="eyebrow">TEAM</span><h1>Staff</h1><p>Manage team members and access status.</p></div><button class="primary" id="add-staff">+ Add staff</button></div><div class="panel"><div id="staff-table" class="table-wrap"></div></div></section>
+
+    <section id="view-content" class="view"><div class="section-head"><div><span class="eyebrow">WEBSITE CONTROL</span><h1>Website Content</h1><p>Keep key public-facing business information in one place.</p></div><button class="primary" id="save-content">Save changes</button></div><div class="panel form-panel"><div class="form-grid-admin"><label>Business name<input data-setting="businessName"></label><label>Tagline<input data-setting="tagline"></label><label class="full">Hero headline<input data-setting="heroHeadline"></label><label class="full">Hero supporting text<textarea data-setting="heroText"></textarea></label><label>Opening days<input data-setting="hoursDays"></label><label>Opening hours<input data-setting="hoursTime"></label><label>Phone<input data-setting="phone"></label><label>WhatsApp number<input data-setting="whatsapp"></label><label>Email<input data-setting="email"></label><label>Location<input data-setting="location"></label><label class="full">About text<textarea data-setting="about"></textarea></label></div></div></section>
+
+    <section id="view-reviews" class="view"><div class="section-head"><div><span class="eyebrow">SOCIAL PROOF</span><h1>Reviews</h1><p>Approve and manage testimonials before they appear publicly.</p></div><button class="primary" id="add-review">+ Add review</button></div><div class="panel"><div id="reviews-table" class="table-wrap"></div></div></section>
+
+    <section id="view-gallery" class="view"><div class="section-head"><div><span class="eyebrow">VISUALS</span><h1>Gallery</h1><p>Manage gallery image records and their public visibility.</p></div><button class="primary" id="add-gallery">+ Add image</button></div><div class="panel"><div id="gallery-table" class="table-wrap"></div></div></section>
+
+    <section id="view-settings" class="view"><div class="section-head"><div><span class="eyebrow">SYSTEM</span><h1>Settings</h1><p>Admin workspace controls, backups and business defaults.</p></div></div>
+      <div class="settings-grid">
+        <div class="panel"><h3>Admin access</h3><p class="muted">This browser stores the admin session locally. For production-grade multi-device authentication, connect Supabase Auth before handing the system over.</p><label>Admin email<input id="admin-email-setting" type="email" placeholder="Set owner email"></label><button class="primary" id="save-admin-email">Save admin email</button></div>
+        <div class="panel"><h3>Data backup</h3><p class="muted">Export the complete workspace as JSON or restore a previous backup on this browser.</p><div class="button-row"><button class="ghost" id="export-data">Export backup</button><label class="file-btn">Import backup<input id="import-data" type="file" accept=".json"></label></div></div>
+        <div class="panel"><h3>Danger zone</h3><p class="muted">Resetting clears this browser's Moraa admin data and restores the starter workspace.</p><button class="danger" id="reset-data">Reset workspace</button></div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="modal-root"></div>
+<script src="/admin.js"></script>
+</body>
+</html>
