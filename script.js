@@ -61,6 +61,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     form.addEventListener("submit",e=>{
       e.preventDefault(); if(!form.reportValidity())return;
       const data=new FormData(form);
+      const booking={id:"booking_"+Date.now(),name:data.get("name"),phone:data.get("phone"),email:data.get("email")||"",service:data.get("service"),date:data.get("date"),time:data.get("time"),notes:data.get("notes")||"",status:"Pending",createdAt:new Date().toISOString()};
+      try{const key="moraa_admin_workspace_v1";const db=JSON.parse(localStorage.getItem(key)||"{}");db.bookings=Array.isArray(db.bookings)?db.bookings:[];db.bookings.push(booking);localStorage.setItem(key,JSON.stringify(db))}catch{}
       const message=["Hello Moraa Beauty Parlour, I'd like to request an appointment.","","Name: "+data.get("name"),"Phone: "+data.get("phone"),"Email: "+(data.get("email")||"Not provided"),"Service: "+data.get("service"),"Preferred date: "+data.get("date"),"Preferred time: "+data.get("time"),"Notes: "+(data.get("notes")||"None")].join("\n");
       const success=form.parentElement.querySelector(".form-success"); if(success)success.classList.add("show");
       wa(message);
