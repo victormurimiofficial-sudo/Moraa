@@ -1,28 +1,12 @@
 document.addEventListener("DOMContentLoaded",()=>{
   const menu=document.querySelector(".menu"), mobile=document.querySelector(".mobile-nav");
-  if(menu&&mobile) menu.addEventListener("click",()=>mobile.classList.toggle("open"));
-
-  document.querySelectorAll(".gallery-item").forEach(item=>{
-    item.addEventListener("click",()=>{
-      const box=document.querySelector(".lightbox");
-      const image=box?.querySelector("img");
-      if(box&&image){image.src=item.querySelector("img").src;box.classList.add("open")}
-    });
-  });
-  document.querySelectorAll(".lightbox button").forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.remove("open")));
-  document.querySelectorAll(".lightbox").forEach(b=>b.addEventListener("click",e=>{if(e.target===b)b.classList.remove("open")}));
-
-  document.querySelectorAll(".faq-q").forEach(q=>q.addEventListener("click",()=>q.parentElement.classList.toggle("open")));
-
-  document.querySelectorAll("[data-booking-form]").forEach(form=>{
-    form.addEventListener("submit",e=>{
-      e.preventDefault();
-      const success=form.parentElement.querySelector(".form-success");
-      if(success) success.classList.add("show");
-      form.reset();
-    });
-  });
-
-  const year=document.querySelectorAll("[data-year]");
-  year.forEach(el=>el.textContent=new Date().getFullYear());
+  if(menu&&mobile){menu.setAttribute("aria-expanded","false");menu.addEventListener("click",()=>{const open=mobile.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));menu.textContent=open?"×":"☰"});mobile.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mobile.classList.remove("open");menu.setAttribute("aria-expanded","false");menu.textContent="☰"}));}
+  document.querySelectorAll(".gallery-item").forEach(item=>item.addEventListener("click",()=>{const box=document.querySelector(".lightbox"),image=box?.querySelector("img"),src=item.querySelector("img")?.src;if(box&&image&&src){image.src=src;box.classList.add("open");document.body.style.overflow="hidden"}}));
+  document.querySelectorAll(".lightbox").forEach(box=>{const close=()=>{box.classList.remove("open");document.body.style.overflow=""};box.querySelector("button")?.addEventListener("click",close);box.addEventListener("click",e=>{if(e.target===box)close()})});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelector(".lightbox.open")?.querySelector("button")?.click()}});
+  document.querySelectorAll(".faq-q").forEach(q=>q.addEventListener("click",()=>{const item=q.parentElement;document.querySelectorAll(".faq-item.open").forEach(other=>{if(other!==item)other.classList.remove("open")});item.classList.toggle("open")}));
+  document.querySelectorAll("[data-booking-form]").forEach(form=>form.addEventListener("submit",e=>{e.preventDefault();const success=form.parentElement.querySelector(".form-success");if(success)success.classList.add("show");form.reset();success?.scrollIntoView({behavior:"smooth",block:"center"})}));
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}}),{threshold:.08});
+  document.querySelectorAll(".section,.page-hero,.service-card,.review,.card,.gallery-item,.intro-image,.product-showcase>div").forEach(el=>{el.classList.add("reveal");observer.observe(el)});
+  document.querySelectorAll("[data-year]").forEach(el=>el.textContent=new Date().getFullYear());
 });
